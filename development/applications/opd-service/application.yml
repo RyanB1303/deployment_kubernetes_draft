@@ -1,0 +1,5 @@
+kertaskerja:
+  status-message: OPD SERVICE IS UP FROM KUBERNETES
+spring:
+  datasource:
+    url: jdbc:postgresql://kertaskerja-postgres:5432/kertaskerja_opd

@@ -1,0 +1,85 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kertaskerja-keycloak
+  labels:
+    app: kertaskerja-keycloak
+spec:
+  selector:
+    matchLabels:
+      app: kertaskerja-keycloak
+  template:
+    metadata:
+      labels:
+        app: kertaskerja-keycloak
+    spec:
+      containers:
+        - name: kertaskerja-keycloak
+          image: quay.io/keycloak/keycloak:26.2
+          args:
+            - "start-dev"
+          ports:
+            - containerPort: 8080
+          env:
+            - name: KC_BOOTSTRAP_ADMIN_USERNAME
+              value: user
+            - name: KC_BOOTSTRAP_ADMIN_PASSWORD
+              value: password
+            - name: KC_DB
+              value: mysql
+            - name: KC_DB_URL
+              value: jdbc:mysql://kertaskerja-mysql:3306/keycloak_db
+            - name: KC_DB_USERNAME
+              value: root
+            - name: KC_DB_PASSWORD
+              value: root
+          startupProbe:
+            httpGet:
+              path: /realms/master
+              port: 8080
+            failureThreshold: 40
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /realms/master
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: kertaskerja-keycloak
+  labels:
+    app: kertaskerja-keycloak
+spec:
+  type: ClusterIP
+  selector:
+    app: kertaskerja-keycloak
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: keycloak-ingress
+  labels:
+    app: kertaskerja-keycloak
+spec:
+  rules:
+    - host: keycloak.kertaskerja.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: kertaskerja-keycloak
+                port:
+                  number: 80

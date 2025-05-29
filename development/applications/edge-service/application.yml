@@ -1,0 +1,27 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: dashboard-ui
+          uri: ${SPA_URL}
+          predicates:
+            - Path=/, /_next/**, /favicon.ico, /assets/**, /images/**, /fonts/**
+        - id: opd-route
+          uri: ${OPD_SERVICE_URL:http://localhost:9001}/opds
+          predicates:
+            - Path=/opds/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: opdCircuitBreaker
+                fallbackUri: forward:/opd-fallback
+        - id: perencanan-service
+          uri: http://perencanaan-service
+          predicates:
+            - Path=/perencanaan/**
+          filters:
+            - StripPrefix=1
+            - name: CircuitBreaker
+              args:
+                name: perencanaanCircuitBreaker
+                fallbackUri: forward:/perencanaan-fallback
