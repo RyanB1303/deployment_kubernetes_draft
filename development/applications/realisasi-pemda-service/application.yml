@@ -1,0 +1,9 @@
+spring:
+  r2dbc:
+    username: user
+    password: password
+    url: r2dbc:postgresql://kertaskerja-postgres:5432/kertaskerja_realisasi_pemda
+  flyway:
+    user: ${spring.r2dbc.username}
+    password: ${spring.r2dbc.password}
+    url: jdbc:postgresql://kertaskerja-postgres:5432/kertaskerja_realisasi_pemda

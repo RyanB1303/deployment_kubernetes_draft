@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://kertaskerja-postgres:5432/manajemen_risiko
+    username: user
+    password: password
+    driver-class-name: org.postgresql.Driver

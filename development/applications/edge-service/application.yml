@@ -6,21 +6,53 @@ spring:
           uri: ${SPA_URL}
           predicates:
             - Path=/, /_next/**, /favicon.ico, /assets/**, /images/**, /fonts/**
+
         - id: opd-route
-          uri: ${OPD_SERVICE_URL:http://localhost:9001}/opds
+          uri: ${OPD_SERVICE_URL}
           predicates:
-            - Path=/opds/**
+            - Path=/api/v1/master_opd/**
           filters:
+            - StripPrefix=3
             - name: CircuitBreaker
               args:
                 name: opdCircuitBreaker
                 fallbackUri: forward:/opd-fallback
+
         - id: perencanan-service
-          uri: http://perencanaan-service
+          uri: ${PERENCANAAN_SERVICE_URL}
           predicates:
-            - Path=/perencanaan/**
+            - Path=/api/v1/perencanaan/**
           filters:
-            - StripPrefix=1
+            - StripPrefix=3
+            - name: CircuitBreaker
+              args:
+                name: perencanaanCircuitBreaker
+                fallbackUri: forward:/perencanaan-fallback
+
+        - id: realisasi-service
+          uri: ${REALISASI_SERVICE_URL}
+          predicates:
+            - Path=/api/v1/realisasi/**
+          filters:
+            - StripPrefix=3
+            - name: CircuitBreaker
+              args:
+                name: realisasiCircuitBreaker
+                fallbackUri: forward:/realisasi-fallback
+
+        - id: realisasi-ui
+          uri: ${REALISASI_UI_URL}
+          predicates:
+            - Path=/realisasi/**
+          filters:
+            - RewritePath=/realisasi/(?<segment>.*), /${segment}
+
+        - id: manrisk-opd-service
+          uri: ${MANRISK_OPD_SERVICE_URL}
+          predicates:
+            - Path=/api/v1/manrisk-opd/**
+          filters:
+            - StripPrefix=3
             - name: CircuitBreaker
               args:
                 name: perencanaanCircuitBreaker

@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: manrisk-opd-service
+  labels:
+    app: manrisk-opd-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: manrisk-opd-service
+  template:
+    metadata:
+      labels:
+        app: manrisk-opd-service
+    spec:
+      containers:
+        - name: manrisk-opd-service
+          image: manrisk-opd-service:latest
+          imagePullPolicy: IfNotPresent
+          lifecycle:
+            preStop:
+              exec:
+                command: [ "sh", "-c", "sleep 5" ]
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DB_URL
+              value: jdbc:postgresql://kertaskerja-postgres:5432/manajemen_risiko
+            - name: SPRING_CONFIG_ADDITIONAL_LOCATION
+              value: file:/workspace/config/
+          volumeMounts:
+            - name: manrisk-opd-config-volume
+              mountPath: /workspace/config
+      volumes:
+        - name: manrisk-opd-config-volume
+          configMap:
+            name: manrisk-opd-config

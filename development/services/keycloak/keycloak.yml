@@ -18,6 +18,7 @@ spec:
           image: quay.io/keycloak/keycloak:26.2
           args:
             - "start-dev"
+            - "--import-realm"
           ports:
             - containerPort: 8080
           env:
@@ -26,13 +27,13 @@ spec:
             - name: KC_BOOTSTRAP_ADMIN_PASSWORD
               value: password
             - name: KC_DB
-              value: mysql
-            - name: KC_DB_URL
-              value: jdbc:mysql://kertaskerja-mysql:3306/keycloak_db
+              value: postgres
             - name: KC_DB_USERNAME
-              value: root
+              value: user
             - name: KC_DB_PASSWORD
-              value: root
+              value: password
+            - name: KC_DB_URL
+              value: jdbc:postgresql://kertaskerja-postgres:5432/kertaskerja_keycloak
           startupProbe:
             httpGet:
               path: /realms/master
@@ -45,6 +46,20 @@ spec:
               port: 8080
             initialDelaySeconds: 5
             periodSeconds: 10
+          resources:
+            requests:
+              cpu: 100m
+              memory: 350Mi
+            limits:
+              cpu: 500m
+              memory: 750Mi
+          volumeMounts:
+            - name: kertaskerja-keycloak-config-volume
+              mountPath: /opt/keycloak/data/import
+      volumes:
+        - name: kertaskerja-keycloak-config-volume
+          configMap:
+            name: kertaskerja-keycloak-config
 
 ---
 

@@ -1,0 +1,3 @@
+include('/Users/ry/Projects/bappeda_dev_team/api_ekak_kab_madiun')
+
+update_settings(max_parallel_updates=1)

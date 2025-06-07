@@ -6,9 +6,9 @@ resources:
   - service.yml
 
 configMapGenerator:
-  - name: opd-config
+  - name: realisasi-pemda-config
     files:
       - application.yml
     options:
       labels:
-        app: opd-service
+        app: realisasi-pemda-service

@@ -1,0 +1,3 @@
+include ('../../../../../bappeda_dev_team/microservices/manrisk-opd-service/Tiltfile')
+
+update_settings(max_parallel_updates=1)

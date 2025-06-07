@@ -13,6 +13,9 @@ data:
     CREATE DATABASE kertaskerja_program;
     CREATE DATABASE kertaskerja_kegiatan;
     CREATE DATABASE kertaskerja_subkegiatan;
+    CREATE DATABASE kertaskerja_keycloak;
+    CREATE DATABASE manajemen_risiko;
+    CREATE DATABASE kertaskerja_realisasi_pemda;
 
 ---
 

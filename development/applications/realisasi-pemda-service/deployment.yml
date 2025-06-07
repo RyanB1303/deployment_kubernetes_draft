@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: opd-service
+  name: realisasi-pemda-service
   labels:
-    app: opd-service
+    app: realisasi-pemda-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: opd-service
+      app: realisasi-pemda-service
   template:
     metadata:
       labels:
-        app: opd-service
+        app: realisasi-pemda-service
     spec:
       containers:
-        - name: opd-service
-          image: opd-service:latest
+        - name: realisasi-pemda-service
+          image: realisasi-pemda-service:latest
           imagePullPolicy: IfNotPresent
           lifecycle:
             preStop:
@@ -27,14 +27,12 @@ spec:
           env:
             - name: BPL_JVM_THREAD_COUNT
               value: "50"
-            - name: SPRING_PROFILES_ACTIVE
-              value: testdata
             - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI
               value: "http://keycloak.kertaskerja.local/realms/KabMadiun"
           volumeMounts:
-            - name: opd-config-volume
+            - name: realisasi-pemda-config-volume
               mountPath: /workspace/config
       volumes:
-        - name: opd-config-volume
+        - name: realisasi-pemda-config-volume
           configMap:
-            name: opd-config
+            name: realisasi-pemda-config

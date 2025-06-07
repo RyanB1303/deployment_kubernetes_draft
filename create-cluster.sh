@@ -29,30 +29,45 @@ kubectl wait \
   --selector=db=kertaskerja-mysql \
   --timeout=180s
 
+printf "\n📦 Deploying PostgreSQL..."
+
+kubectl apply -f development/services/postgres.yml
+
+sleep 5
+
+echo "\n⌛ Waiting for PostgreSQL to be deployed..."
+
+while [ "$(kubectl get pod -l db=kertaskerja-postgres | wc -l)" -eq 0 ] ; do
+  sleep 5
+done
+
+printf "\n⌛ Waiting for PostgreSQL to be ready..."
+
+kubectl wait \
+  --for=condition=ready pod \
+  --selector=db=kertaskerja-postgres \
+  --timeout=180s
+
 # uncomment line below to enable keycloak
-# echo "\n📦 Deploying Keycloak..."
+echo "\n📦 Deploying Keycloak..."
 
-# # kubectl apply -f development/services/keycloak/keycloak-config.yml
-# kubectl apply -f development/services/keycloak.yml
+# kubectl apply -f development/services/keycloak/keycloak-config.yml
+kubectl apply -k development/services/keycloak/
 
-# sleep 5
+sleep 5
 
-# printf "\n⌛ Waiting for Keycloak to be deployed..."
+printf "\n⌛ Waiting for Keycloak to be deployed..."
 
-# while [ "$(kubectl get pod -l app=kertaskerja-keycloak | wc -l)" -eq 0 ] ; do
-#   sleep 5
-# done
+while [ "$(kubectl get pod -l app=kertaskerja-keycloak | wc -l)" -eq 0 ] ; do
+  sleep 5
+done
 
-# printf "\n⌛ Waiting for Keycloak to be ready..."
+printf "\n⌛ Waiting for Keycloak to be ready..."
 
-# kubectl wait \
-#   --for=condition=ready pod \
-#   --selector=app=kertaskerja-keycloak \
-#   --timeout=300s
-
-# printf "\n⌛ Ensuring Keycloak Ingress is created..."
-
-# kubectl apply -f development/services/keycloak.yml
+kubectl wait \
+  --for=condition=ready pod \
+  --selector=app=kertaskerja-keycloak \
+  --timeout=300s
 
 printf "\n📦 Deploying Redis..."
 
@@ -72,5 +87,8 @@ kubectl wait \
   --for=condition=ready pod \
   --selector=db=kertaskerja-redis \
   --timeout=180s
+
+echo "\n minikube ip: "
+minikube ip --profile kertaskerja
 
 echo "\n⛵ Happy Sailing!\n"

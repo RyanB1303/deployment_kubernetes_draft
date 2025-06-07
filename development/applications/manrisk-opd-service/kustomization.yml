@@ -6,9 +6,9 @@ resources:
   - service.yml
 
 configMapGenerator:
-  - name: opd-config
+  - name: manrisk-opd-config
     files:
       - application.yml
     options:
       labels:
-        app: opd-service
+        app: manrisk-opd-service
