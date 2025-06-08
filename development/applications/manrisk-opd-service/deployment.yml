@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: manrisk-opd-service
-          image: manrisk-opd-service:latest
+          image: manajemenrisiko:latest
           imagePullPolicy: IfNotPresent
           lifecycle:
             preStop:

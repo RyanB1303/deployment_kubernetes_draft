@@ -4,3 +4,19 @@ spring:
     username: user
     password: password
     driver-class-name: org.postgresql.Driver
+  flyway:
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+    url: jdbc:postgresql://kertaskerja-postgres:5432/manajemen_risiko
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    use-root-path: true
+  api-docs:
+    path: /v3/api-docs
+  servers:
+    - url: /api/v1/manrisk-opd
+
+server:
+  forward-headers-strategy: framework
