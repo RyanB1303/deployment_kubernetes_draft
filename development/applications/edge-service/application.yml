@@ -40,13 +40,6 @@ spring:
                 name: realisasiCircuitBreaker
                 fallbackUri: forward:/realisasi-fallback
 
-        - id: realisasi-ui
-          uri: ${REALISASI_UI_URL}
-          predicates:
-            - Path=/realisasi/**
-          filters:
-            - RewritePath=/realisasi/(?<segment>.*), /${segment}
-
         - id: manrisk-opd-service
           uri: ${MANRISK_OPD_SERVICE_URL}
           predicates:

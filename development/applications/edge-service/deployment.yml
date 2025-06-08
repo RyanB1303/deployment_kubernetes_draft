@@ -35,8 +35,6 @@ spec:
               value: "http://perencanaan-service"
             - name: REALISASI_SERVICE_URL
               value: "http://realisasi-pemda-service"
-            - name: REALISASI_UI_URL
-              value: "http://192.168.1.5:3001"
             - name: MANRISK_OPD_SERVICE_URL
               value: "http://manrisk-opd-service"
             - name: SPRING_DATA_REDIS_HOST
