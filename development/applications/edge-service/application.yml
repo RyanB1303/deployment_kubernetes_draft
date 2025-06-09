@@ -3,9 +3,11 @@ spring:
     gateway:
       routes:
         - id: dashboard-ui
-          uri: ${SPA_URL}
+          uri: ${DASHBOARD_UI_URL}
           predicates:
             - Path=/, /_next/**, /favicon.ico, /assets/**, /images/**, /fonts/**
+          filters:
+            - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
 
         - id: opd-route
           uri: ${OPD_SERVICE_URL}
@@ -50,3 +52,10 @@ spring:
               args:
                 name: perencanaanCircuitBreaker
                 fallbackUri: forward:/perencanaan-fallback
+
+        - id: realisasi-ui
+          uri: ${REALISASI_UI_URL}
+          predicates:
+            - Path=/realisasi, /realisasi/**
+          filters:
+            - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
